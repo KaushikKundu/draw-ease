@@ -1,4 +1,4 @@
-import zod from 'zod';
+import zod, { optional } from 'zod';
 
 export const CreateUserSchema = zod.object({
     name: zod.string(),

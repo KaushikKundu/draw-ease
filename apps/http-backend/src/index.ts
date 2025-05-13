@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { JWT_SECRET } from '@repo/backend-common/config';
 import jwt from "jsonwebtoken";
 import { middleware } from "./middleware";
-import { CreateUserSchema } from "@repo/common/types";
+import { CreateUserSchema,SignInSchema } from "@repo/common/types";
 import bcrypt from "bcrypt";
 import {prismaClient} from "@repo/db/client";
 import e from "express";
@@ -17,11 +17,12 @@ app.post("/signup", async (req: Request, res: Response) => {
         res.status(400).json({ message: "Incorrect inputs" });
         return;
     }
+    const hashedPassword = await bcrypt.hash(parsedData.data.password, 10);
     try {
         await prismaClient.user.create({
             data:{
                 email:parsedData.data.username,
-                password:parsedData.data.password,
+                password:hashedPassword, 
                 name:parsedData.data?.name,
             }
         });
@@ -31,15 +32,40 @@ app.post("/signup", async (req: Request, res: Response) => {
     }
 });
 
-app.post("/signin", (req: Request, res: Response) => {
+app.post("/signin", async(req: Request, res: Response) => {
+    const parsedData = SignInSchema.safeParse(req.body);
+    if(!parsedData.success) {
+        res.status(400).json({ message: "Incorrect inputs" });
+        return;
+    }
+    const { username,password } = parsedData.data;
+    const existingUser = await prismaClient.user.findUnique({
+        where: {
+            email: username,
+        },
+        select: {
+            password: true,
+        }
+    });
+    if(!existingUser) {
+        res.status(401).json({ message: "Invalid credentials" });
+        return;
+    } 
+    const hashedPassword = existingUser.password;
+
+    const isPasswordValid = bcrypt.compareSync(password, hashedPassword);
+    if(!isPasswordValid) {
+        res.status(401).json({ message: "Invalid credentials" });
+        return;
+    }
+    
     try {
-        const userID = 1;
-        const token = jwt.sign({ userID }, JWT_SECRET, {
+        const token = jwt.sign({ username }, JWT_SECRET, {
             expiresIn: "1h",
         });
         res.json({ token });
     } catch (error) {
-        res.status(500).json({ message: "Error signing token" });
+        res.status(500).json({ error});
     }
 });
 
