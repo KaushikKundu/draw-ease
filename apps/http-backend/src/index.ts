@@ -1,20 +1,34 @@
 import express, { Request, Response } from "express";
-import { JWT_SECRET } from "../../../packages/backend-common/src";
+import { JWT_SECRET } from '@repo/backend-common/config';
 import jwt from "jsonwebtoken";
 import { middleware } from "./middleware";
 import { CreateUserSchema } from "@repo/common/types";
+import bcrypt from "bcrypt";
+import {prismaClient} from "@repo/db/client";
+import e from "express";
 
 const app = express();
 
 app.use(express.json());
 
-app.post("/signup", (req: Request, res: Response) => {
-    const data = CreateUserSchema.safeParse(req.body);
-    if (!data.success) {
+app.post("/signup", async (req: Request, res: Response) => {
+    const parsedData = CreateUserSchema.safeParse(req.body);
+    if (!parsedData.success) {
         res.status(400).json({ message: "Incorrect inputs" });
+        return;
     }
-    // Add logic to handle successful signup
-    res.status(200).json({ message: "Signup successful" });
+    try {
+        await prismaClient.user.create({
+            data:{
+                email:parsedData.data.username,
+                password:parsedData.data.password,
+                name:parsedData.data?.name,
+            }
+        });
+        res.json({ message: "User created successfully" });
+    } catch (error) {
+        res.status(500).json({  error });
+    }
 });
 
 app.post("/signin", (req: Request, res: Response) => {
@@ -30,7 +44,7 @@ app.post("/signin", (req: Request, res: Response) => {
 });
 
 app.post("/room", middleware, (req: Request, res: Response) => {
-    // Add logic to handle the room creation
+    
     res.status(200).json({ message: "Room created successfully" });
 });
 
