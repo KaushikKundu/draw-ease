@@ -2,10 +2,9 @@ import express, { Request, Response } from "express";
 import { JWT_SECRET } from '@repo/backend-common/config';
 import jwt from "jsonwebtoken";
 import { middleware } from "./middleware";
-import { CreateUserSchema,SignInSchema } from "@repo/common/types";
+import { CreateUserSchema,SignInSchema,RoomSchema } from "@repo/common/types";
 import bcrypt from "bcrypt";
 import {prismaClient} from "@repo/db/client";
-import e from "express";
 
 const app = express();
 
@@ -39,28 +38,27 @@ app.post("/signin", async(req: Request, res: Response) => {
         return;
     }
     const { username,password } = parsedData.data;
-    const existingUser = await prismaClient.user.findUnique({
+    const existingUser = await prismaClient.user.findFirst({
         where: {
-            email: username,
-        },
-        select: {
-            password: true,
+            email: username
         }
     });
+    
     if(!existingUser) {
         res.status(401).json({ message: "Invalid credentials" });
         return;
-    } 
-    const hashedPassword = existingUser.password;
+    }
 
-    const isPasswordValid = bcrypt.compareSync(password, hashedPassword);
+    const existingPassword = existingUser.password;
+
+    const isPasswordValid = await bcrypt.compare(password, existingPassword);
     if(!isPasswordValid) {
-        res.status(401).json({ message: "Invalid credentials" });
+        res.status(401).json({ message: "Invalid credentials pass" });
         return;
     }
     
     try {
-        const token = jwt.sign({ username }, JWT_SECRET, {
+        const token = jwt.sign({ userId:existingUser?.id }, JWT_SECRET, {
             expiresIn: "1h",
         });
         res.json({ token });
@@ -69,9 +67,28 @@ app.post("/signin", async(req: Request, res: Response) => {
     }
 });
 
-app.post("/room", middleware, (req: Request, res: Response) => {
+app.post("/room", middleware,async (req: Request, res: Response) => {
+    const parsedData = RoomSchema.safeParse(req.body);
+    if(!parsedData.success) {
+        res.status(400).json({ message: "Incorrect inputs" });
+        return;
+    }
+    const userId = req.userId;
+    // console.log(req.user);
     
-    res.status(200).json({ message: "Room created successfully" });
+    try{
+        const room = await prismaClient.room.create({
+            data: {
+                slug: parsedData.data.name,
+                adminId: userId
+            }
+        })
+        res.status(200).json({ message: "Room created successfully", room });
+
+    }catch (error) {
+        res.status(500).json({ error });
+    }
+    
 });
 
 app.listen(3000, () => {

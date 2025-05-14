@@ -11,5 +11,5 @@ export const SignInSchema = zod.object({
     password: zod.string()
 })
 export const RoomSchema = zod.object({
-    id: zod.string().min(1).max(20)
+    name: zod.string().min(1).max(20)
 })
