@@ -53,9 +53,9 @@ wss.on("connection", (ws, request) => {
     if(!user){
       return;
     }
-    user.rooms
+    user.rooms = user.rooms.filter(room => room !== parsedData.roomId);
   }
-  );
+  });
   ws.on("close", () => {
     console.log("Client disconnected");
   })
