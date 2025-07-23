@@ -6,6 +6,7 @@ import {  Plus_Jakarta_Sans, Lora } from 'next/font/google';
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-plus-jakarta-sans',
+  
 });
 
 export const metadata: Metadata = {
