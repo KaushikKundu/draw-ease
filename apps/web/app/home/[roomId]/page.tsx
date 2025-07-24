@@ -1,21 +1,17 @@
 "use client"
+import { initDraw } from "@/draw/game";
 import { useEffect, useRef } from "react";
 
 function Home(){
     const canvasRef = useRef<HTMLCanvasElement>(null);
     useEffect(()=>{
         if(canvasRef.current){
-            const canvas = canvasRef.current;
-            const ctx = canvas.getContext("2d");
-            if(!ctx) {
-                return ;
-            }
-            ctx.strokeRect(25,0,100,100);
+           initDraw(canvasRef.current)
         }
     },[canvasRef]);
     return (
       <div>
-        <canvas ref={canvasRef} width={500} height={500} color=""></canvas>
+        <canvas ref={canvasRef} width={1000} height={500} className="border-slate-900 border-2"></canvas>
       </div>
     );
 }
