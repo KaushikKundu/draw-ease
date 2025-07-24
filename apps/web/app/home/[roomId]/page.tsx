@@ -1,5 +1,5 @@
 "use client"
-import { initDraw } from "@/draw/game";
+import { initDraw } from "@/draw/index";
 import { useEffect, useRef } from "react";
 
 function Home(){
