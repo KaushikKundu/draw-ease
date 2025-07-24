@@ -9,14 +9,16 @@
     "./client": "./src/index.ts"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*"
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^24.1.0",
+    "prisma": "^6.12.0"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@prisma/client": "6.7.0",
-    "prisma": "^6.7.0"
+    "@prisma/client": "6.12.0",
+    "dotenv": "^17.2.0"
   }
 }

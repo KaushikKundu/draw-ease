@@ -17,10 +17,10 @@ import {
   Layers,
   Clock
 } from 'lucide-react';
-
+import { useRouter } from 'next/navigation';
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const router = useRouter();
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-green-50">
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b">
@@ -43,10 +43,10 @@ export default function Home() {
                 </Button>
               </div>
               <div className="flex items-center space-x-4">
-                <Button variant="ghost">
+                <Button variant="ghost" onClick={() => router.push('/signin')}>
                   Sign in
                 </Button>
-                <Button className="bg-gradient-to-r from-green-400 to-green-600 hover:from-green-700 hover:to-green-800">
+                <Button className="bg-gradient-to-r from-green-400 to-green-600 hover:from-green-700 hover:to-green-800" onClick={() => router.push('/signup')}>
                   Get Started for Free
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
@@ -77,10 +77,10 @@ export default function Home() {
                 Pricing
               </Button>
               <div className="pt-4 space-y-3 border-t">
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full"onClick={() => router.push('/signin')}>
                   Sign in
                 </Button>
-                <Button className="w-full bg-gradient-to-r from-green-600 to-green-800">
+                <Button className="w-full bg-gradient-to-r from-green-600 to-green-800" onClick={() => router.push('/signup')}>
                   Get Started for Free
                 </Button>
               </div>
@@ -115,6 +115,7 @@ export default function Home() {
               <Button
                 size="lg"
                 className="bg-gradient-to-r from-green-600 to-green-800 hover:from-green-700 hover:to-green-900 px-8"
+                onClick={() => router.push('/signup')}
               >
                 Start collaborating for free
                 <ArrowRight className="ml-2 w-5 h-5" />

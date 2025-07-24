@@ -10,7 +10,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'Miro - Collaborative Whiteboarding Platform',
+  title: 'Doodle - Collaborative Whiteboarding Platform',
   description: 'The modern collaborative whiteboarding platform for teams. Brainstorm, plan, and create together in real-time from anywhere.',
 };
 
