@@ -13,10 +13,11 @@ export const enum ShapeName {
 function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
-  const [curShape, setCurShape] = useState<ShapeName>(ShapeName.Rectangle);
+  const [curShape, setCurShape] = useState<ShapeName | null>(null);
   useEffect(() => {
     if (canvasRef.current) {
-      initDraw(canvasRef.current, curShape);
+      const cleanup = initDraw(canvasRef.current, curShape);
+      return cleanup;
     }
   }, [curShape]);
   useEffect(() => {
