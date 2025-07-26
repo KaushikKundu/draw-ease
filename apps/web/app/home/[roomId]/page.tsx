@@ -2,8 +2,8 @@
 import { initDraw } from "@/draw/index";
 import { useEffect, useRef, useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { ArrowRight, Circle, Eraser, Square } from "lucide-react";
-
+import { ArrowRight, Circle, Eraser, EraserIcon, Square } from "lucide-react";
+ 
 export const enum ShapeName {
   Circle,
   Rectangle,
@@ -16,6 +16,11 @@ function Home() {
   const [curShape, setCurShape] = useState<ShapeName | null>(null);
   useEffect(() => {
     if (canvasRef.current) {
+      if(curShape == ShapeName.Eraser){
+        canvasRef.current.style.cursor = "url('/eraser.png') 12 12, auto";
+      }else {
+        canvasRef.current.style.cursor = "default";
+      }
       const cleanup = initDraw(canvasRef.current, curShape);
       return cleanup;
     }
@@ -37,7 +42,7 @@ function Home() {
           <ToggleGroupItem value="eraser" onClick={() => setCurShape(ShapeName.Eraser)}><Eraser /></ToggleGroupItem>
         </ToggleGroup>
       </div>
-      <canvas ref={canvasRef} width={canvasSize.width} height={canvasSize.height} className="bg-gray-100"></canvas>
+      <canvas ref={canvasRef} width={canvasSize.width} height={canvasSize.height} className="bg-black"></canvas>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { ShapeName } from "@/app/home/[roomId]/page";
+import { shouldPublishLog } from "better-auth";
 type Shape =
     | {
           type: ShapeName.Rectangle;
@@ -27,7 +28,10 @@ type Shape =
       };
 let existingShapes: Shape[] = [];
 
-export function initDraw(canvas: HTMLCanvasElement, curShape: ShapeName | null) {
+export function initDraw(
+    canvas: HTMLCanvasElement,
+    curShape: ShapeName | null
+) {
     const ctx = canvas.getContext("2d");
     if (!ctx) {
         throw new Error("Failed to get canvas context");
@@ -36,14 +40,14 @@ export function initDraw(canvas: HTMLCanvasElement, curShape: ShapeName | null) 
     let startX = 0;
     let startY = 0;
     let isDrawing = false;
-    const mousedownHandler = (event:MouseEvent) => {
+    const mousedownHandler = (event: MouseEvent) => {
         startX = event.offsetX;
         startY = event.offsetY;
         isDrawing = true;
-    }
-    const mousemoveHandler = (event:MouseEvent) => {
+    };
+    const mousemoveHandler = (event: MouseEvent) => {
         if (!isDrawing) return;
-        ctx.strokeStyle = "black";
+        ctx.strokeStyle = "white";
 
         clearCanvas(canvas, existingShapes, ctx);
 
@@ -70,10 +74,19 @@ export function initDraw(canvas: HTMLCanvasElement, curShape: ShapeName | null) 
             ctx.moveTo(startX, startY);
             ctx.lineTo(currentX, currentY);
             ctx.stroke();
+        } else if (curShape === ShapeName.Eraser) {
+            let currentX = event.offsetX;
+            let currentY = event.offsetY;
+            existingShapes.forEach((shape) => {
+                if (pointIsInsideShape(shape, currentX, currentY)) {
+                    existingShapes = existingShapes.filter((x) => x !== shape);
+                }
+            });
+            clearCanvas(canvas, existingShapes, ctx);
         }
-    }
-    
-    const mouseupHandler = (event:MouseEvent) => {
+    };
+
+    const mouseupHandler = (event: MouseEvent) => {
         isDrawing = false;
         const endX = event.offsetX;
         const endY = event.offsetY;
@@ -110,12 +123,73 @@ export function initDraw(canvas: HTMLCanvasElement, curShape: ShapeName | null) 
                 type: ShapeName.Line,
             });
         }
-       clearCanvas(canvas, existingShapes, ctx);
-    }
-    canvas.addEventListener("mousedown",mousedownHandler );
-    canvas.addEventListener("mousemove", mousemoveHandler );
+        clearCanvas(canvas, existingShapes, ctx);
+    };
+    canvas.addEventListener("mousedown", mousedownHandler);
+    canvas.addEventListener("mousemove", mousemoveHandler);
     canvas.addEventListener("mouseup", mouseupHandler);
 
+    const pointIsInsideShape = (shape: Shape, x: number, y: number) => {
+        if (shape.type === ShapeName.Rectangle) {
+            return (
+                x >= shape.x &&
+                x <= shape.x + shape.width &&
+                y >= shape.y &&
+                y <= shape.y + shape.height
+            );
+        }
+        if (shape.type === ShapeName.Circle) {
+            const dx = x - shape.centerX;
+            const dy = y - shape.centerY;
+            return Math.sqrt(dx * dx + dy * dy) <= shape.radius;
+        }
+        if (shape.type === ShapeName.Line) {
+            return isPointNearLine(
+                shape.startX,
+                shape.startY,
+                shape.endX,
+                shape.endY,
+                x,
+                y
+            );
+        }
+        return false;
+    };
+    function isPointNearLine(
+        x1: number,
+        y1: number,
+        x2: number,
+        y2: number,
+        px: number,
+        py: number,
+        tolerance: number = 5
+    ): boolean {
+        const A = px - x1;
+        const B = py - y1;
+        const C = x2 - x1;
+        const D = y2 - y1;
+
+        const dot = A * C + B * D;
+        const lenSq = C * C + D * D;
+        const param = lenSq !== 0 ? dot / lenSq : -1;
+
+        let xx, yy;
+
+        if (param < 0) {
+            xx = x1;
+            yy = y1;
+        } else if (param > 1) {
+            xx = x2;
+            yy = y2;
+        } else {
+            xx = x1 + param * C;
+            yy = y1 + param * D;
+        }
+
+        const dx = px - xx;
+        const dy = py - yy;
+        return Math.sqrt(dx * dx + dy * dy) <= tolerance;
+    }
 
     const clearCanvas = (
         canvas: HTMLCanvasElement,
@@ -148,6 +222,5 @@ export function initDraw(canvas: HTMLCanvasElement, curShape: ShapeName | null) 
         canvas.removeEventListener("mousedown", mousedownHandler);
         canvas.removeEventListener("mousemove", mousemoveHandler);
         canvas.removeEventListener("mouseup", mouseupHandler);
-        
-    }
+    };
 }
