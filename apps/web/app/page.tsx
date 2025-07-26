@@ -30,7 +30,7 @@ export default function Home() {
             <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center">
               <Palette className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-slate-900">Doodle</span>
+            <span className="text-xl font-bold text-slate-900"> Doodle</span>
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
@@ -38,9 +38,7 @@ export default function Home() {
                 <Button variant="ghost" className="text-slate-600 hover:text-slate-900">
                   Features
                 </Button>
-                <Button variant="ghost" className="text-slate-600 hover:text-slate-900">
-                  Pricing
-                </Button>
+              
               </div>
               <div className="flex items-center space-x-4">
                 <Button variant="ghost" onClick={() => router.push('/signin')}>
@@ -53,7 +51,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Mobile menu button */}
             <div className="md:hidden">
               <Button
                 variant="ghost"
@@ -66,16 +63,14 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
+  
         {isMenuOpen && (
           <div className="md:hidden border-t bg-white/95 backdrop-blur-md">
             <div className="px-4 py-6 space-y-4">
               <Button variant="ghost" className="w-full justify-start">
                 Features
               </Button>
-              <Button variant="ghost" className="w-full justify-start">
-                Pricing
-              </Button>
+             
               <div className="pt-4 space-y-3 border-t">
                 <Button variant="outline" className="w-full"onClick={() => router.push('/signin')}>
                   Sign in
@@ -89,35 +84,34 @@ export default function Home() {
         )}
       </nav>
 
-      {/* Hero Section */}
       <section className="relative overflow-hidden py-20 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <Badge variant="secondary" className="mb-8 bg-green-100 text-green-700 hover:bg-green-200">
               <Star className="w-4 h-4 mr-2 fill-current" />
-              #1 Collaborative Whiteboard Tool
+              #1 Whiteboard Tool
             </Badge>
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-tight mb-8">
-              Collaborate and create
+              Draw Freely
               <br />
-              <span className="bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent">
                 visually together
               </span>
             </h1>
 
             <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed mb-10">
-              Doodle is a collaborative whiteboarding platform that allows teams to
-              brainstorm, plan, and create together in real-time from anywhere in the world.
+              Doodle is a free whiteboarding platform that allows anyone to
+              brainstorm, plan, and create in canvas from anywhere in the world.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
               <Button
                 size="lg"
                 className="bg-gradient-to-r from-green-600 to-green-800 hover:from-green-700 hover:to-green-900 px-8"
-                onClick={() => router.push('/signup')}
+                onClick={() => router.push('/home')}
               >
-                Start collaborating for free
+                Try without Signup
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </div>
@@ -126,32 +120,18 @@ export default function Home() {
 
       </section>
 
-      {/* Features Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-              Everything you need to collaborate
+              Everything you need to create
             </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Powerful features designed to make remote collaboration seamless and productive
+              Powerful features designed to make drawing seamless and productive
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-green-50 to-green-100">
-              <CardHeader>
-                <div className="w-12 h-12 bg-gradient-to-br from-green-600 to-green-800 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Users className="w-6 h-6 text-white" />
-                </div>
-                <CardTitle className="text-xl">Real-time Collaboration</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-slate-600">
-                  Work together in real-time with unlimited team members. See cursors, edits, and changes instantly.
-                </CardDescription>
-              </CardContent>
-            </Card>
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-green-50 to-emerald-50">
               <CardHeader>
@@ -181,52 +161,26 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-green-100 to-green-200">
-              <CardHeader>
-                <div className="w-12 h-12 bg-gradient-to-br from-green-800 to-green-900 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Share2 className="w-6 h-6 text-white" />
-                </div>
-                <CardTitle className="text-xl">Easy Sharing</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-slate-600">
-                  Share your boards with anyone via link. Control permissions and collaborate securely.
-                </CardDescription>
-              </CardContent>
-            </Card>
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-green-200 to-green-300">
               <CardHeader>
                 <div className="w-12 h-12 bg-gradient-to-br from-green-900 to-green-700 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <Clock className="w-6 h-6 text-white" />
                 </div>
-                <CardTitle className="text-xl">Version History</CardTitle>
+                <CardTitle className="text-xl">No SignUp Needed</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-slate-600">
-                  Never lose your work. Access complete version history and restore any previous state.
+                  Start drawing instantly without any registration. Just do guest login and begin creating.
                 </CardDescription>
               </CardContent>
             </Card>
 
-            <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-green-100 to-green-200">
-              <CardHeader>
-                <div className="w-12 h-12 bg-gradient-to-br from-green-800 to-green-900 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Layers className="w-6 h-6 text-white" />
-                </div>
-                <CardTitle className="text-xl">Templates & Assets</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-slate-600">
-                  Start faster with pre-built templates and a library of icons, shapes, and assets.
-                </CardDescription>
-              </CardContent>
-            </Card>
+           
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
       <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -308,26 +262,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-green-700 to-green-900">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Ready to transform your team collaboration?
-          </h2>
-          <p className="text-xl text-green-100 mb-10 max-w-2xl mx-auto">
-            Join thousands of teams already using Doodle to bring their ideas to life
-          </p>
-          <Button
-            size="lg"
-            className="bg-white text-green-700 hover:bg-gray-50 px-8"
-          >
-            Start your free trial today
-            <ArrowRight className="ml-2 w-5 h-5" />
-          </Button>
-        </div>
-      </section>
+  
 
-      {/* Footer */}
       <footer className="bg-slate-900 text-slate-300 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
@@ -339,7 +275,7 @@ export default function Home() {
                 <span className="text-xl font-bold text-white">Doodle</span>
               </div>
               <p className="text-slate-400">
-                The collaborative whiteboarding platform for modern teams.
+                The collaborative whiteboarding platform
               </p>
             </div>
 
@@ -347,21 +283,10 @@ export default function Home() {
               <h3 className="font-semibold text-white mb-4">Product</h3>
               <ul className="space-y-2">
                 <li><Button variant="link" className="p-0 h-auto text-slate-400 hover:text-white">Features</Button></li>
-                <li><Button variant="link" className="p-0 h-auto text-slate-400 hover:text-white">Templates</Button></li>
-                <li><Button variant="link" className="p-0 h-auto text-slate-400 hover:text-white">Integrations</Button></li>
-                <li><Button variant="link" className="p-0 h-auto text-slate-400 hover:text-white">API</Button></li>
               </ul>
             </div>
 
-            <div>
-              <h3 className="font-semibold text-white mb-4">Company</h3>
-              <ul className="space-y-2">
-                <li><Button variant="link" className="p-0 h-auto text-slate-400 hover:text-white">About</Button></li>
-                <li><Button variant="link" className="p-0 h-auto text-slate-400 hover:text-white">Blog</Button></li>
-                <li><Button variant="link" className="p-0 h-auto text-slate-400 hover:text-white">Careers</Button></li>
-                <li><Button variant="link" className="p-0 h-auto text-slate-400 hover:text-white">Contact</Button></li>
-              </ul>
-            </div>
+          
 
             <div>
               <h3 className="font-semibold text-white mb-4">Support</h3>

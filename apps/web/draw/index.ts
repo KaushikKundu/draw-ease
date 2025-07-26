@@ -1,4 +1,4 @@
-import { ShapeName } from "@/app/home/[roomId]/page";
+import { ShapeName } from "@/app/home/page";
 import { shouldPublishLog } from "better-auth";
 type Shape =
     | {
