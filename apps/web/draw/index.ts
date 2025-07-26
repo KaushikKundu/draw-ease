@@ -40,14 +40,16 @@ export function initDraw(
     let startX = 0;
     let startY = 0;
     let isDrawing = false;
+    ctx.lineWidth = 4;
     const mousedownHandler = (event: MouseEvent) => {
         startX = event.offsetX;
         startY = event.offsetY;
         isDrawing = true;
+        
     };
     const mousemoveHandler = (event: MouseEvent) => {
         if (!isDrawing) return;
-        ctx.strokeStyle = "white";
+        ctx.strokeStyle = "black";
 
         clearCanvas(canvas, existingShapes, ctx);
 

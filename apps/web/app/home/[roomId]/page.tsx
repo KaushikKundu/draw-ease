@@ -3,7 +3,8 @@ import { initDraw } from "@/draw/index";
 import { useEffect, useRef, useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { ArrowRight, Circle, Eraser, EraserIcon, Square } from "lucide-react";
- 
+import { Button } from "@/components/ui/button";
+
 export const enum ShapeName {
   Circle,
   Rectangle,
@@ -16,9 +17,9 @@ function Home() {
   const [curShape, setCurShape] = useState<ShapeName | null>(null);
   useEffect(() => {
     if (canvasRef.current) {
-      if(curShape == ShapeName.Eraser){
-        canvasRef.current.style.cursor = "url('/eraser.png') 12 12, auto";
-      }else {
+      if (curShape == ShapeName.Eraser) {
+        canvasRef.current.style.cursor = "cell"
+      } else {
         canvasRef.current.style.cursor = "default";
       }
       const cleanup = initDraw(canvasRef.current, curShape);
@@ -30,19 +31,22 @@ function Home() {
       width: window.innerWidth,
       height: window.innerHeight
     })
-  },[])
-  console.log(curShape);
+  }, [])
   return (
-    <div>
-      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-white p-2 rounded-xl border shadow flex">
-        <ToggleGroup type="single">
-          <ToggleGroupItem value="rectangle" onClick={() => setCurShape(ShapeName.Rectangle)}><Square /> </ToggleGroupItem>
-          <ToggleGroupItem value="circle" onClick={() => setCurShape(ShapeName.Circle)}><Circle /></ToggleGroupItem>
-          <ToggleGroupItem value="Line" onClick={() => setCurShape(ShapeName.Line)}><ArrowRight /></ToggleGroupItem>
-          <ToggleGroupItem value="eraser" onClick={() => setCurShape(ShapeName.Eraser)}><Eraser /></ToggleGroupItem>
-        </ToggleGroup>
-      </div>
-      <canvas ref={canvasRef} width={canvasSize.width} height={canvasSize.height} className="bg-black"></canvas>
+    <div className="bg-green-100">
+      <nav className="flex justify-between items-center p-2">
+        <span className="text-xl font-bold text-slate-900 ml-8">Doodle</span>
+        <div className=" z-50 bg-white p-2 rounded-xl border shadow flex">
+          <ToggleGroup type="single">
+            <ToggleGroupItem value="rectangle" onClick={() => setCurShape(ShapeName.Rectangle)}><Square /> </ToggleGroupItem>
+            <ToggleGroupItem value="circle" onClick={() => setCurShape(ShapeName.Circle)}><Circle /></ToggleGroupItem>
+            <ToggleGroupItem value="line" onClick={() => setCurShape(ShapeName.Line)}><ArrowRight /></ToggleGroupItem>
+            <ToggleGroupItem value="eraser" onClick={() => setCurShape(ShapeName.Eraser)}><Eraser /></ToggleGroupItem>
+          </ToggleGroup>
+        </div>
+        <Button variant="default" className="mr-4">Share</Button>
+      </nav>
+      <canvas ref={canvasRef} width={canvasSize.width} height={canvasSize.height} ></canvas>
     </div>
   );
 }
